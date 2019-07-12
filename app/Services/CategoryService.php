@@ -1,6 +1,8 @@
 <?php
 namespace App\Services;
+
 use App\Category;
+
 class CategoryService
 {
     public function store($data) { 
@@ -26,12 +28,13 @@ class CategoryService
 
     public function destroy($id) {
         $del = false;
+
         try {
             $category = Category::find($id);
             $category->delete();
             $del = true;
         } catch (\Exception $e) {
-            $del = false;
+            \Log::error($e);
         }
 
         return $del;

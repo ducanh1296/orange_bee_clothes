@@ -20,8 +20,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 
-Route::group(['prefix'=>'/admin'],function() {
-	Route::namespace('Admin')->group(function () {
+Route::group(['prefix'=>'/admin', 'prefix' => 'admin'],function() {
 		Route::get('/brands', 'BrandController@index')->name('admin.brand.index');
 		Route::get('/brands/create', 'BrandController@create')->name('admin.brand.create');
 		Route::post('/brands/{brand}', 'BrandController@update')->name('admin.brand.update');
@@ -35,5 +34,4 @@ Route::group(['prefix'=>'/admin'],function() {
 		Route::get('/categories/{category}/edit', 'CategoryController@edit')->name('admin.category.edit');
 		Route::post('/categories', 'CategoryController@store')->name('admin.category.store');
 		Route::delete('/categories/{category}', 'CategoryController@destroy')->name('admin.category.destroy');
-	});
 });
