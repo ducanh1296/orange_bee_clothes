@@ -11,8 +11,8 @@ use Validator;
 class UploadImage extends Controller
 {
 
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
+
         $validation = Validator::make($request->all(), [
 
             'select_file' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
@@ -30,6 +30,7 @@ class UploadImage extends Controller
             ]);
 
         } else {
+            
             return response()->json([
 
                 'message' => $validation->errors()->all(),

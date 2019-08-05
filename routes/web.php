@@ -37,7 +37,5 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
     Route::get('/posts', 'PostController@index')->name('admin.post.index');
 	Route::get('/posts/create', 'PostController@create')->name('admin.post.create');
 	Route::post('/posts', 'PostController@store')->name('admin.post.store');
-
 	Route::post('/posts/create', 'UploadImage@store')->name('admin.upimage.store');
-
 });

@@ -40,10 +40,6 @@
                                         <td>{{ $post->content }}</td>
                                         <td>{{ $post->image }}</td>
                                         <td>{{ $post->body }}</td>
-                                        <td>
-                                            <a href="posts/{{ $post->id }}/edit" class="btn btn-info" role="button">{{ __('post.edit') }}</a>
-                                            <div id="btn-del-post" class="btn btn-info btn-del-post" role="button" data-post-id="{{ $post->id }}">{{ __('post.delete') }}</div>
-                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -53,9 +49,4 @@
             </div>
         </div>
     </div>
-
-@endsection
-
-@section('js')
-    <script src="{{ asset('js/delete_post.js') }}"></script>
 @endsection
