@@ -1,5 +1,12 @@
 @extends('adminlte::page')
 
+@section('css')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+@endsection
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -40,14 +47,6 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <textarea name="body" id="editor">
-                            </textarea>
-                            <script>
-                                var simplemde = new SimpleMDE({ element: document.getElementById("editor") });
-                            </script>
-                        </div>
-                        
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
@@ -55,12 +54,65 @@
                                 </button>
                             </div>
                         </div>
+
+                        <div class="form-group row">
+                            <div class="equal height row">
+                                <textarea name="body" id="editor"></textarea>
+                            </div>
+                            <script>
+                                var simplemde = new SimpleMDE({ element: document.getElementById("editor") })
+                            </script>
+                        </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+</div> 
+<div class="container">
+    <form method="POST" id="upload_form" enctype="multipart/form-data">
+        @csrf
+        <table class="table">
+            <tr>
+                <td width="40%" align="left"><label>Select File for Upload</label></td>
+                </tr>
+                <td width="30"><input type="file" name="select_file" id="select_file" /></td>
+                </tr>
+                <td width="30%" align="left"><input type="submit" name="upload" id="upload" class="btn btn-primary" value="Upload"></td>
+            </tr>
+        </table>
+        <br/>
+    </form>
 </div>
 @endsection
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
-<script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+
+@section('js')
+<script>
+    $(document).ready(function() {
+        $('#upload_form').on('submit', function(event) {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            event.preventDefault();
+            var url = "{{ route('admin.upimage.store') }}";
+
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: new FormData(this),
+                dataType: 'JSON',
+                contentType: false,
+                cache: false,
+                processData: false,
+                success:function(data) {
+                    const pos = simplemde.codemirror.getCursor();
+                    simplemde.codemirror.replaceRange('![]('+(data.image_path)+')', pos);
+                }
+            })
+        });
+    });
+</script>
+@stop

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\CreatePostRequest;
+use App\Http\Requests\CreatePost;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 
@@ -38,7 +38,7 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreatePostRequest $request)
+    public function store(CreatePost $request)
     {
         $data = $request->only([
             'title',
@@ -53,7 +53,7 @@ class PostController extends Controller
             return back()->with('status', $uploaded['msg']);
         }
         $data['image'] = $uploaded['file_name'];
-        
+
         try {
             $post = Post::create($data);
         } catch (Exception $e) {
@@ -94,6 +94,9 @@ class PostController extends Controller
         }
         return $result;
     }
+
+
+   
 
     /**
      * Display the specified resource.
